@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:CollectionManagement.Models"
+             x:Class="CollectionManagement.Views.MainPage"
+             Title="Moje Kolekcje">
+    <VerticalStackLayout BackgroundColor="#F2EBDF">
+
+        <Grid Padding="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <VerticalStackLayout Grid.Column="0">
+                <Label Text="Kolekcje" FontSize="24" HorizontalOptions="Center"  Margin="15"/>
+                <CollectionView ItemsSource="{Binding Collections}" VerticalOptions="FillAndExpand" MaximumHeightRequest="500">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BorderColor="Transparent" BackgroundColor="#F2C4B3" CornerRadius="25" Margin="15">
+                                <ScrollView Orientation="Horizontal">
+                                    <HorizontalStackLayout Padding="5" BackgroundColor="#F2C4B3" Margin="15">
+                                    
+                                        <VerticalStackLayout Margin="0,0,50,0">
+                                            <Label Text="{Binding Name}" FontSize="20" FontAttributes="Bold" TextColor="#F2522E"/>
+                                            <HorizontalStackLayout>
+                                                <Label Text="Elementy: " FontSize="12"/>
+                                                <Label Text="{Binding Items.Count}" FontSize="12"/>
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+                                        <HorizontalStackLayout>
+                                            <Button Text="Przejdź do kolekcji" 
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, 
+                                                        Path=BindingContext.OpenCollectionCommand}" 
+                                                        CommandParameter="{Binding .}" Margin="0,0,10,0"/>
+                                            <Button Text="Edytuj" 
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, 
+                                                        Path=BindingContext.EditCollectionCommand}" 
+                                                        CommandParameter="{Binding .}" Margin="0,0,10,0"/>
+                                            <Button Text="Usuń" 
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, 
+                                                Path=BindingContext.DeleteCollectionCommand}" 
+                                                CommandParameter="{Binding .}"/>
+                                        </HorizontalStackLayout>
+                                    </HorizontalStackLayout>
+                                </ScrollView>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    <CollectionView.EmptyView>
+                        <Frame BorderColor="Transparent" BackgroundColor="#F2C4B3" CornerRadius="25" Margin="15">
+                            <Label Text="Brak kolekcji" HorizontalOptions="Center" VerticalOptions="Center" FontSize="20"/>
+                        </Frame>
+                    </CollectionView.EmptyView>
+                </CollectionView>
+            </VerticalStackLayout>
+
+            <StackLayout Grid.Column="1" Padding="10">
+                <Label Text="Dodaj nową kolekcję" FontSize="20" HorizontalOptions="Center" Margin="0,0,0,10" />
+                <Entry Placeholder="Nazwa nowej kolekcji" Text="{Binding NewCollectionName}" />
+                <Button Text="Dodaj kolekcję" Command="{Binding AddCollectionCommand}" Margin="0,20,0,0" />
+                <Button Text="Importuj kolekcję" Command="{Binding ImportCollectionCommand}" Margin="0,20,0,0" BackgroundColor="#F2522E"/>
+                <Entry Placeholder="Edytuj nazwę kolekcji" Text="{Binding EditedCollectionName}" IsVisible="{Binding IsEditing}" Margin="0,50,0,0"/>
+                <Button Text="Zapisz zmiany" Command="{Binding SaveChangesCommand}" IsVisible="{Binding IsEditing}" Margin="0,20,0,0"/>
+                <Button Text="Anuluj" Command="{Binding CancelEditCommand}" IsVisible="{Binding IsEditing}" Margin="0,20,0,0"/>
+            </StackLayout>
+        </Grid>
+
+        
+    </VerticalStackLayout>
+</ContentPage>
